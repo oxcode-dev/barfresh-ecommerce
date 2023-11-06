@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities; */
 
+/* @import url('../node_modules/react-simple-star-rating/'); */
 html,
 body {
   padding: 0;
@@ -73,4 +74,30 @@ h1, h2, h3, h4, h5, h6 {
   100% {
     transform: translate(0);
   }
+}
+
+.starWrapper {
+  filter: drop-shadow(0px 0px 1px gray);
+  justify-content: center;
+  text-align: center;
+}
+
+.star,
+.activeStar {
+  cursor: pointer;
+  float: left;
+  background: url('../public/star.svg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  filter: invert(100%) sepia(3%) saturate(123%) hue-rotate(60deg)
+    brightness(115%) contrast(84%);
+}
+
+.activeStar {
+  filter: invert(80%) sepia(59%) saturate(2087%) hue-rotate(352deg)
+    brightness(107%) contrast(109%);
+}
+
+input[type="radio"] {
+  display: none;
 }

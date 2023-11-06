@@ -32,8 +32,8 @@ export const FounderHistory = () => (
         <div className='px-4 md:px-20 py-8 sm:py-16 w-full'>
             <div className='flex flex-wrap justify-between items-center'>
                 <div className='w-full sm:w-1/2'>
-                    <div className='pr-8'>
-                        <img src='./img/founder.png' />
+                    <div className='pr-8 w-full h-full sm:-mt-16'>
+                        <img src='./img/founder.jpeg' className="object-cover w-full h-full" />
                     </div>
                 </div>
                 <div className='w-full sm:w-1/2'>

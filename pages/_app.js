@@ -1,4 +1,4 @@
-import '../styles/globals.css';
+ import '../styles/globals.css';
 import {wrapper, store} from '../store';
 import { Provider } from 'react-redux';
 
@@ -11,4 +11,6 @@ function App({ Component, ...rest }) {
   )
 }
 
-export default App //wrapper.withRedux(App);
+const WrappedApp = wrapper.withRedux(App)
+
+export default WrappedApp 

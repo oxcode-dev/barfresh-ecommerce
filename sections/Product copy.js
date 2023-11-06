@@ -2,12 +2,9 @@
 
 import { useState, useEffect } from "react"
 import Link from 'next/link';
+import { getCarts, addCart } from '../store/slices/CartSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from "../helpers";
-import { ReviewForm } from "../components/ReviewForm";
-import { Timestamp } from "@firebase/firestore";
-import StarRating from "../components/StarRating";
-import { useCartDetail } from "../hooks/useCartDetail";
-import { NotificationBar } from "../components/Notification";
 
 const images = [
     'https://anikenatural.com/wp-content/uploads/2021/04/300g-African-Black-Soap.jpeg',
@@ -15,7 +12,7 @@ const images = [
     'https://www.u-buy.com.ng/productimg/?image=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNzFBYkdQVDk0NkwuX1NMMTE5MF8uanBn.jpg',
     'https://www.tholuhairbeauty.com/cdn/shop/products/DuduOsun3.jpg?v=1569213274',
     'https://www.lumibeauty.com/3129-large_default/dudu-osun-black-soap.jpg',
-    // 'https://girlyessentials.com.ng/wp-content/uploads/2022/11/beautysecretsafricanblacksoap.jpg',
+    'https://girlyessentials.com.ng/wp-content/uploads/2022/11/beautysecretsafricanblacksoap.jpg',
 ]
 export const ProductImagesView = () => {
     const [activeImage, setActiveImage] = useState(images[0])
@@ -33,8 +30,8 @@ export const ProductImagesView = () => {
                 <div className="py-4">
                     <div className="flex w-full overflow-x-hidden">
                         { images.map((image, key) => (
-                            <button key={key} onClick={ () => setActiveImage(image)} className="mx-2 sm:p-1 border rounded">
-                                <img src={image} className="w-12 sm:w-16 h-10 sm:h-16 aspect-video object-cover sm:object-contain bg-blend-color-burn" />
+                            <button key={key} onClick={ () => setActiveImage(image)} className="mx-2 p-1 border rounded">
+                                <img src={image} className="w-16 h-16 aspect-video object-contain bg-blend-color-burn" />
                             </button>
                         ))}
                     </div>
@@ -45,13 +42,67 @@ export const ProductImagesView = () => {
 }
 
 export const ProductDetails = ({ product }) => {
-    const [notifyState, setNotifyState] = useState(false)
-    const [notifyMessage, setNotifyMessage] = useState('')
-    const { 
-        carts, handleCartQuantity, handleReduceCartQuantity, handleAddCart,
-    } = useCartDetail()
+    const dispatch = useDispatch()
+    const getAllCarts = useSelector(getCarts) || []
+    const [carts, setCarts] = useState([])
+    const [productCart, setProductCart] = useState({})
+    const [isClient, setIsClient] = useState(false)
 
-    let productCart = carts.find(n => n.product_id === product.id) || {}
+    const handleAddCart = (product) => {
+        let allCarts = [...carts]
+        let checkCart = allCarts.find(n => n.product_id === product.id) 
+
+        if(!checkCart) {
+            let items = [...allCarts, {
+                product_id: product.id, 
+                quantity: 1
+            }]
+            dispatch(addCart(items))
+            setCarts(items)
+            setProductCart(items.find(n => n.product_id === product.id) || {})
+            alert('Cart Added')
+        }
+    }
+
+    const handleCartQuantity = (id) => {
+        let checkCart = carts.find(n => n.product_id === id)
+        let items = []
+
+        if(checkCart) {
+            if(product.quantity > checkCart.quantity) {
+                items = carts.map(obj =>
+                    obj.product_id === id ? { ...obj, quantity: obj.quantity + 1 } : obj
+                );
+                dispatch(addCart(items))
+                setCarts(items)
+                setProductCart(items.find(n => n.product_id === product.id) || {})
+            }
+        }
+    }
+
+    const handleReduceCartQuantity = (id) => {
+        let checkCart = carts.find(n => n.product_id === id)
+        let items = []
+
+        if(checkCart) {
+            if(checkCart.quantity > 1) {
+                items = carts.map(obj =>
+                    obj.product_id === id ? { ...obj, quantity: obj.quantity - 1 } : obj
+                );
+                dispatch(addCart(items))
+                setCarts(items)
+                setProductCart(items.find(n => n.product_id === product.id) || {})
+            }
+        }
+    }
+
+    useEffect(() => {
+        setIsClient(true)
+        if(product){
+            setCarts(getAllCarts)
+            setProductCart(getAllCarts.find(n => n.product_id === product.id) || {})
+        }
+    }, [])
 
     return (
         <>
@@ -63,18 +114,15 @@ export const ProductDetails = ({ product }) => {
                     <h3 className="text-gray-900 whitespace-no-wrap text-3xl font-semibold">£ {product.price || 0}</h3>
                 </div>
                 <div className={`${isEmpty(productCart) ? 'hidden' : 'inline-flex'} space-x-6 py-2`}>
-                    <a href="#" 
-                        onClick={e => handleReduceCartQuantity(product.id, e)}
+                    <button 
+                        onClick={() => handleReduceCartQuantity(product.id)}
                         className='bg-green-700 text-white rounded-full p-1'
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" /></svg>
-                    </a>
-                    <p className='text-lg'>
-                        {/* {carts.find(n => n.product_id === product.id)?.quantity || 0} */}
-                        {productCart?.quantity || 0}
-                    </p>
+                    </button>
+                    <p className='text-lg'>{productCart?.quantity || 0}</p>
                     <button
-                        onClick={e => handleCartQuantity(product.id, e)}
+                        onClick={() => handleCartQuantity(product.id)}
                         className='bg-green-700 text-white rounded-full p-1'
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" /></svg>
@@ -86,7 +134,7 @@ export const ProductDetails = ({ product }) => {
                             isEmpty(productCart) 
                             ? 
                             <button 
-                                onClick={e => handleAddCart(product.id, e, setNotifyState, setNotifyMessage)}
+                                onClick={() => handleAddCart(product)}
                                 className="py-3 w-64 text-green-700 h-auto bg-white border-2 border-green-600 rounded-lg inline-flex justify-center items-center space-x-2"
                             >
                                 <span>Add to cart</span>
@@ -155,12 +203,6 @@ export const ProductDetails = ({ product }) => {
                     </div>
                 </div>
             </div>
-
-            <NotificationBar
-                active={notifyState}
-                onClose={() => setNotifyState(false)}
-                message={notifyMessage}
-            />
         </>
     )
 }
@@ -169,12 +211,12 @@ export const ProductDescription = ({ product }) => {
     return (
         <>
             <div className="py-8">
-                <div className="sm:px-4 lg:px-0 mt-6 text-gray-700 w-full mx-auto text-lg leading-relaxed">
-                    <h2 className="text-xl sm:text-4xl text-gray-800 font-bold mb-4 mt-4">
+                <div className="px-4 lg:px-0 mt-6 text-gray-700 w-full mx-auto text-lg leading-relaxed">
+                    <h2 className="text-4xl text-gray-800 font-bold mb-4 mt-4">
                         Description 
                     </h2>
                 </div>
-                <div className="sm:px-4 lg:px-0 mt-6 text-gray-700 w-full md:max-w-5xl mx-auto text-lg leading-relaxed">
+                <div className="px-4 lg:px-0 mt-12 text-gray-700 w-full md:max-w-5xl mx-auto text-lg leading-relaxed">
                     {product.description || 'N/A'}
                 </div>
             </div>
@@ -183,60 +225,67 @@ export const ProductDescription = ({ product }) => {
 }
 
 export const ProductReviews = ({ reviews = [], product}) => {
-    const [showReviewForm, setShowReviewForm] = useState(false)
-
-    function convertTimestamp(timestamp) {
-        if(timestamp && timestamp.seconds && timestamp.nanoseconds){
-            let date = new Timestamp(timestamp.seconds, timestamp.nanoseconds).toDate();
-            return date.toLocaleString()
-        }
-        return 'N/A'
-    }
 
     return (
         <>
-            <div className="sm:px-4 lg:px-0 mt-6 text-gray-700 w-full mx-auto text-lg leading-relaxed">
-                <h2 className="text-xl sm:text-4xl text-gray-800 font-bold mb-4 mt-4">
+            <div className="px-4 lg:px-0 mt-6 text-gray-700 w-full mx-auto text-lg leading-relaxed">
+                <h2 className="text-4xl text-gray-800 font-bold mb-4 mt-4">
                     Customers Reviews 
                 </h2>
             </div>
-            <div className="w-full md:w-1/2">
-                <div className="py-6 flex items-center justify-between">
-                    <Link
-                        scroll={false} 
-                        href="#" 
-                        onClick={() => setShowReviewForm(true)}
-                        className="inline-flex items-center space-x-4"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10"><path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
-                        <span>Write a Review</span>
-                    </Link>
-                    <Link
-                        scroll={false}
-                        onClick={() => setShowReviewForm(false)} href="#" 
-                        className={showReviewForm ? 'flex' : 'hidden'}
-                    >
-                        close
-                    </Link>
-                </div>
-
-                <div className="space-y-8 w-full mb-8">
-                    { showReviewForm && 
-                        <ReviewForm productId={product.id} setClose={setShowReviewForm} /> 
-                    }
+            <div className="w-full md:max-w-5xl mx-auto hidden">
+                <div className="flex justify-between items-center">
+                    <div className="border-b-2 w-64 py-6">
+                        <p className="text-6xl font-bold py-3">4.3</p>
+                        <p>out of 5</p>
+                    </div>
+                    <div className="space-y-2">
+                        {
+                            ['w-1/2', 'w-2/3', 'w-2/5', 'w-1/5', 'w-3/4'].map((option, key) => (
+                                <div key={key} className="relative h-2 rounded-lg w-72 bg-gray-300">
+                                    <div className={`absolute bg-green-600 h-2 rounded-lg ${option}`}></div>
+                                </div>
+                            ))
+                        }
+                        <div>
+                            <p className="text-right text-gray-600">7 Ratings</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div className="w-full mx-auto">
+                <div className="flex justify-between py-8 hidden">
+                    <div>
+                        <h4 className="text-xl font-semibold">Tap to Rate:</h4>
+                    </div>
+                    <div className="flex text-yellow-500">
+                        {[...Array(5)].map((e, key) => (
+                            <a href="#" key={key}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10"><path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
+                            </a>
+                        ))}
+                    </div>
+                </div>
 
-            <div className="space-y-8 w-full mx-auto mb-4">
+                <div className="py-8">
+                    <a href="#" className="inline-flex items-center space-x-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10"><path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+                        <span>Write a Review</span>
+                    </a>
+                </div>
+            </div>
+            <div className="space-y-8 w-full md:max-w-5xl mx-auto mb-8">
                 {  reviews && reviews.length > 0
                     ? reviews.map((review, key) => (
-                        <div className="bg-gray-50 px-4 md:px-24 py-6 rounded-lg" key={key}>
+                        <div className="bg-gray-100 px-24 py-6 rounded-lg" key={key}>
                             <div className="flex justify-between">
                                 <div className="flex text-yellow-400">
-                                    <StarRating iconClassName="w-5 h-5" rating={review.rate || 0} />
+                                    {[...Array(5)].map((e, key) => (
+                                        <svg key={key} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" /></svg>
+                                    ))}
                                 </div>
-                                <div className="">
-                                    <p>{convertTimestamp(review.created_at)}</p>
+                                <div>
+                                    <p>25-10-2021</p>
                                 </div>
                             </div>
                             <div className="py-4">

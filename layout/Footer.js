@@ -4,7 +4,7 @@ const helpfulLinks = [
     { title: 'About Us', link: '/about', },
     { title: 'Contact Us', link: '/contact', },
     { title: 'Store', link: '/store', },
-    { title: 'Leave a review', link: '/', },
+    // { title: 'Leave a review', link: '/', },
 ]
 
 const legalInfoLinks = [
@@ -22,16 +22,16 @@ const paymentIcons = [
 
 const Footer = () => (
     <>
-        <div className="w-full mx-2 sm:mx-4 md:mx-16 py-8">
+        <div className="w-full px-2 sm:px-4 md:px-20 py-8">
 
-	        <div className="p-4 bg-white sm:p-6 w-full">
+	        <div className="py-4 bg-white sm:py-6 w-full">
 		        <div className="md:flex md:justify-between w-full">
-                    <div className="grid grid-cols-1 gap-8 sm:gap-6 sm:grid-cols-2 md:gap-6 md:grid-cols-4 w-full lg:px-16">
+                    <div className="grid grid-cols-1 gap-8 sm:gap-6 sm:grid-cols-2 md:gap-6 md:grid-cols-4 w-full">
                         <div className="mb-6 md:mb-0 flex flex-col sm:items-center sm:justify-center">
                             <Link href="/" className="flex sm:items-center">
                                 <img src="/logo.png" className="w-24 md:w-32" alt="FlowBite Logo" />
                             </Link>
-                            <p className='tracking-wider sm:px-4 lg:px-8 sm:text-center text-sm text-gray-500'>
+                            <p className='tracking-wider sm:text-center text-sm text-gray-500 px-2'>
                                 Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit of met sint. Velit of dsaa
                             </p>
                         </div>
@@ -39,7 +39,7 @@ const Footer = () => (
                             <h3 className="mb-8 font-semibold text-gray-900 sm:text-xl">
                                 Helpful links
                             </h3>
-                            <ul className='text-sm md:text-lg font-light'>
+                            <ul className='text-sm sm:text-base xl:text-lg font-light'>
                                 { 
                                     helpfulLinks.map((link, key) => (
                                         <li className="mb-4 sm:mb-6" key={key}>
@@ -55,7 +55,7 @@ const Footer = () => (
                             <h3 className="mb-8 font-semibold text-gray-900 sm:text-xl">
                                 Legal Information
                             </h3>
-                            <ul className='text-sm md:text-lg font-light'>
+                            <ul className='text-sm sm:text-base xl:text-lg font-light'>
                                 { 
                                     legalInfoLinks.map((link, key) => (
                                         <li className="mb-4 sm:mb-6" key={key}>

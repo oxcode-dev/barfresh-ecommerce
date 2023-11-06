@@ -1,6 +1,13 @@
+'use client'
 import Link from 'next/link';
 import ProductCard from '../components/ProductCard';
 import Faqs from './Faqs';
+import { useSelector } from 'react-redux';
+import { getFaqs } from '../store/slices/FaqsSlice';
+import { getProducts } from '../store/slices/ProductsSlice';
+import { useEffect, useState } from 'react';
+import EmptyState from '../components/EmptyState';
+import { NotificationBar } from '../components/Notification';
 
 const benefits = [
     { title: "Safe payment", img: "/img/benefit_credit_card.png" },
@@ -9,15 +16,15 @@ const benefits = [
 ]
 export const Hero = () => (
     <>
-        <div className='px-20 py-6 w-full text-white' style={{ backgroundColor: '#008000'}}>
+        <div className='px-4 md:px-20 py-6 w-full text-white' style={{ backgroundColor: '#008000'}}>
             <div className="w-full flex flex-wrap items-center">
-                <div className="w-full sm:w-1/2">
+                <div className="w-full sm:w-1/2 md:order-first order-last">
                     <div>
-                        <h2 className="text-4xl md:text-5xl font-medium leading-7 my-2 mb-5">
+                        <h2 className="text-3xl md:text-5xl font-medium leading-7 my-2 mb-5">
                             Barfresh Naturals
                         </h2>
                         <div className="pl-2 border-l-2 border-white my-8">
-                            <p className="pr-20 text-lg font-light text-gray-200">
+                            <p className="sm:pr-20 text-base xl:text-lg font-light text-gray-200">
                                 Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. 
                                 Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
                             </p>
@@ -37,7 +44,7 @@ export const Hero = () => (
                     </div>
                 </div>
                 <div className="w-full sm:w-1/2 flex justify-end">
-                    <div className="py-0 px-12 slide_left">
+                    <div className="py-8 sm:py-0 px-4 sm:px-12 slide_left">
                         <img src="/img/home_hero.png" />
                     </div>
                 </div>
@@ -46,43 +53,45 @@ export const Hero = () => (
     </>
 )
 
-export const HomeAboutSection = () => (
-    <>
-        {/* <div className='glitch'></div> */}
-        <div className='px-4 md:px-16 py-8 md:py-0 pt-6 w-full' style={{ background: '#F2F9F2' }}>
-            <div className="w-full flex flex-wrap items-center">
-                <div className="w-full sm:w-1/2 flex justify-between transition-transform duration-[0.8s] ease-[ease-in-out] translate-x-[0%]">
-                    <div className="py-0">
-                        <img src="/img/home_about.png" />
-                    </div>
-                </div>
-                <div className="w-full sm:w-1/2">
-                    <div className="pt-4 md:pt-0 md:pl-8">
-                        <h2 className="text-4xl sm:text-5xl font-semibold leading-7 my-2 mb-5">
-                            About us
-                        </h2>
-                        <div className="my-8 md:pr-10 text-lg text-gray-800">
-                            <p className="">
-                                Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis 
-                                enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
-                            </p>
-                            <p>
-                                Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat 
-                                duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
-                            </p>
+export const HomeAboutSection = () => { 
+    return (
+        <>
+            {/* <div className='glitch'></div> */}
+            <div className='px-4 md:px-16 py-8 md:py-0 pt-6 w-full' style={{ background: '#F2F9F2' }}>
+                <div className="w-full flex flex-wrap items-center pt-8">
+                    <div className="w-full sm:w-1/2 flex justify-between transition-transform duration-[0.8s] ease-[ease-in-out] translate-x-[0%]">
+                        <div className="py-0">
+                            <img src="/img/home_about.png" />
                         </div>
-                        <div className="flex space-x-2 text-lg">
-                            <Link href="/about" className="w-48 text-white h-16 bg-green-700 border-2 border-white rounded-lg inline-flex justify-center items-center space-x-2">
-                                <span>Read more</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-8"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
-                            </Link>
+                    </div>
+                    <div className="w-full sm:w-1/2">
+                        <div className="pt-4 md:pt-0 md:pl-8">
+                            <h2 className="text-2xl sm:text-3xl xl:text-5xl font-semibold leading-7 my-2 mb-5">
+                                About us
+                            </h2>
+                            <div className="my-6 md:pr-10 text-base xl:text-lg text-gray-800">
+                                <p className="">
+                                    Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis 
+                                    enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
+                                </p>
+                                <p>
+                                    Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat 
+                                    duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.
+                                </p>
+                            </div>
+                            <div className="flex space-x-2 text-lg">
+                                <Link href="/about" className="w-48 text-white h-16 bg-green-700 border-2 border-white rounded-lg inline-flex justify-center items-center space-x-2">
+                                    <span>Read more</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-8"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </>
-)
+        </>
+    )
+}
 
 export const HomeBenefits = () => (
     <>
@@ -104,49 +113,93 @@ export const HomeBenefits = () => (
     </>
 )
 
-export const HomeProducts = () => (
-    <>
-        <div className='px-4 md:px-20 py-8 sm:py-16 w-full'>
-            <h2 className="text-2xl md:text-4xl font-semibold leading-7 my-2 mb-5 text-center py-6">
-                Products
-            </h2>
-            <div className='flex flex-wrap justify-center w-full md:max-w-5xl md:mx-auto'>
-                {[...Array(2)].map((e, key) => (
-                    <div className='w-full sm:w-1/2 p-3' key={key}>
-                      <ProductCard />
-                    </div>
-                ))}
-            </div>
-            <div className="flex space-x-2 text-lg justify-center my-12">
-                <Link href="/store" className="w-48 text-white h-16 bg-green-700 border-2 border-white rounded-lg inline-flex justify-center items-center space-x-2">
-                    <span>Visit store</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-8"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
-                </Link>
-            </div>
-        </div>
-    </>
-)
+export const HomeProducts = () => { 
+    const products = useSelector(getProducts) || []
+    const data = products.slice(0, 3)
+    const [notifyState, setNotifyState] = useState(false)
+    const [notifyMessage, setNotifyMessage] = useState('')
 
-export const FaqsSection = () => (
-    <>
-        <div className='px-4 md:px-20 py-8 sm:py-16 w-full'>
-            <div className='py-8'>
-                <h2 className='text-2xl md:text-4xl text-center font-semibold'>
-                    Frequently asked questions.
+    const [isClient, setIsClient] = useState(false)
+
+    useEffect(() => {
+        setIsClient(true)
+    })
+
+    return (
+        <>
+            <div className='px-4 md:px-20 py-8 sm:py-16 w-full'>
+                <h2 className="text-2xl md:text-4xl font-semibold leading-7 my-2 mb-5 text-center py-6">
+                    Products
                 </h2>
+                {
+                    isClient &&
+                    <div className='flex flex-wrap justify-center w-full md:max-w-5xl md:mx-auto'>
+                        {data.map((option, key) => (
+                            <div className='w-full sm:w-1/3 p-3' key={key}>
+                                <ProductCard 
+                                    product={option}
+                                    setAlert={setNotifyState}
+                                    setMessage={setNotifyMessage}
+                                />
+                            </div>
+                        ))}
+
+                        {data && data.length === 0 && <EmptyState />}
+
+                        <NotificationBar
+                            active={notifyState}
+                            onClose={() => setNotifyState(false)}
+                            message={notifyMessage}
+                        />
+                    </div>
+                }
+                <div className="flex space-x-2 text-lg justify-center my-12">
+                    <Link href="/store" className="w-48 text-white h-16 bg-green-700 border-2 border-white rounded-lg inline-flex justify-center items-center space-x-2">
+                        <span>Visit store</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-8"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
+                    </Link>
+                </div>
             </div>
-            <div className="w-full flex flex-wrap items-center py-6 md:py-12">
-                <div className="w-full sm:w-2/3">
-                    <div className="pr-0 sm:pr-12">
-                        <Faqs />
+        </>
+    )
+}
+
+export const FaqsSection = () => {
+    const faqs = useSelector(getFaqs) || []
+
+    const [isClient, setIsClient] = useState(false)
+
+    useEffect(() => {
+        setIsClient(true)
+    })
+
+    return(
+        <>
+            <div className='px-4 md:px-20 py-8 sm:py-16 w-full'>
+                <div className='py-8'>
+                    <h2 className='text-2xl md:text-4xl text-center font-semibold'>
+                        Frequently asked questions.
+                    </h2>
+                </div>
+                <div className="w-full flex flex-wrap items-center py-6 md:py-12">
+                    <div className="w-full sm:w-2/3">
+                        <div className="pr-0 sm:pr-12" suppressHydrationWarning>
+                            { 
+                                isClient && 
+                                <div>
+                                    <Faqs faqs={faqs} />
+                                    {faqs && faqs.length === 0 && <EmptyState />}
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div className="w-full sm:w-1/3 sm:flex hidden sm:justify-between">
+                        <div className="py-0">
+                            <img src="/img/faqs.png" />
+                        </div>
                     </div>
                 </div>
-                <div className="w-full sm:w-1/3 sm:flex hidden sm:justify-between">
-                    <div className="py-0">
-                        <img src="/img/faqs.png" />
-                    </div>
-                </div>
             </div>
-        </div>
-    </>
-)
+        </>
+    )
+}

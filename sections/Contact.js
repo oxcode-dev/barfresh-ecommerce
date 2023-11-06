@@ -1,7 +1,17 @@
+import { useState } from "react";
+import { NotificationBar } from "../components/Notification";
+
 export const ContactForm = () => {
+    const [notifyState, setNotifyState] = useState(false)
+
+    const submit = (e) => {
+        setNotifyState(!notifyState)
+
+        e.preventDefault();
+    }
     return (
         <>
-            <div>
+            <form onSubmit={e => submit(e)}>
                 <div className='my-5'>
                     <input 
                     type="email" required 
@@ -24,9 +34,14 @@ export const ContactForm = () => {
                     />
                 </div>
                 <div className='my-5'>
-                    <button className="bg-green-700 h-16 w-full text-white rounded-lg">Send</button>
+                    <button type="submit" className="bg-green-700 h-16 w-full text-white rounded-lg">Send</button>
                 </div>
-            </div>
+            </form>
+
+            <NotificationBar
+                active={notifyState}
+                onClose={() => setNotifyState(false)}
+            />
         </>
     )
 }

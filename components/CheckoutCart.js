@@ -18,7 +18,11 @@ const CheckoutCart = () => {
                         {carts.map((cart, key) => (
                             <div key={key} className="flex justify-between space-x-2 items-center py-2">
                                 <div className="flex space-x-4 items-center">
-                                    <img className="rounded-lg w-10 h-10 object-cover" src="https://www.ninostyle.com/cdn/shop/products/SS20_BLOG_SEB1_2000x.jpg?v=1612451365" alt="" />
+                                    <img
+                                        className="rounded-lg w-10 h-10 object-cover" 
+                                        src={getProductDetails(cart.product_id).image || '/img/no-product-image.png' } 
+                                        alt={getProductDetails(cart.product_id).name || 'Product Name'}
+                                    />
                                     <div>
                                         <p className="text-sm font-medium">
                                             { getProductDetails(cart.product_id).name || 'N/A' }

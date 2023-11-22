@@ -8,17 +8,21 @@ const ProductCard = ({ product, setAlert, setMessage }) => {
         <>
             <div className="w-full bg-white border border-gray-200 rounded-lg shadow product-card">
                 <Link href={`/store/${product.id || null}`}>
-                    <img className="rounded-t-lg" src="https://www.ninostyle.com/cdn/shop/products/SS20_BLOG_SEB1_2000x.jpg?v=1612451365" alt="" />
+                    <img 
+                        className="rounded-t-lg h-40 object-cover w-full" 
+                        src={product?.image || '/img/no-product-image.png'} 
+                        alt={product?.title || 'Product Image'}
+                    />
                 </Link>
                 <div href="#">
                     <div className="p-5">
                         <Link href={`/store/${product.id}`}>
                             <p className="mb-2 text-lg font-medium tracking-tight truncate line-clamp-1 text-gray-700">
-                                { product.name || 'N/A' }
+                                { product?.name || 'N/A' }
                             </p>
                         </Link>
-                        <p className="mb-3 font-normal text-gray-500 text-sm line-clamp-3">
-                            { product.description || 'N/A' }
+                        <p className="mb-3 font-normal text-gray-500 text-xs line-clamp-2">
+                            { product?.description || 'N/A' }
                         </p>
                         <div className="flex space-x-2 hidden">
                             <div className="flex text-yellow-400">

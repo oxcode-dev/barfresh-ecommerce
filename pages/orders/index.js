@@ -1,20 +1,32 @@
-import { useState } from "react";
+'use client'
+import { useEffect, useState } from "react";
 import RootLayout from "../../layout";
 import { useFirebaseDB } from "../../hooks/useFirebaseDB";
 import { o_O } from "../../helpers";
 import { OrdersTable } from "../../sections/orders";
 import { EmptyOrder } from "../../components/EmptyState";
 import { LoadingState } from "../../components/LoadingState";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser, getUser } from "../../store/slices/CartSlice";
 
 export default function Orders() {
-    const [search, setSearch] = useState('')
+    const dispatch = useDispatch()
+    const user = useSelector(getUser) || ''
+
+    const [isClient, setIsClient] = useState(false)
+    const [search, setSearch] = useState(user || '')
     const [isLoading, setIsLoading] = useState(false)
     const [orders, setOrders] = useState([])
     const { getDataWhereKeyValue } = useFirebaseDB()
 
-    const searchOrders = async(e) => {
+    const searchOrders = (e) => {
         e.preventDefault();
+        dispatch(addUser(search))
+        getOrders()
+    }
+    const getOrders = async() => {
         setIsLoading(true)
+        console.log(search)
 
         let [error, data] = await o_O(getDataWhereKeyValue('orders', 'email', search))
 
@@ -22,11 +34,14 @@ export default function Orders() {
             console.log(error)
         }
         else {
-            console.log(data)
             setOrders(data)
         }
         setIsLoading(false)
     }
+    useEffect(() => {
+        setIsClient(true)
+        getOrders()
+    }, [isClient])
     return (
         <>
             <RootLayout>
@@ -41,6 +56,7 @@ export default function Orders() {
                                 <input 
                                     onChange={e => setSearch(e.target.value)}
                                     type="email" required
+                                    value={search}
                                     placeholder="Enter your email to search your orders" 
                                     className="w-full bg-transparent py-1 px-3 pl-10 sm:pl-12 border border-gray-700 rounded-lg h-full focus:outline-none"
                                 />
@@ -57,13 +73,15 @@ export default function Orders() {
                             </div>
                         </form>
                     </div>
-                    <div className="py-2 inline-block min-w-full">
-                        { !isLoading && orders && orders.length > 0 
-                            ? <OrdersTable orders={orders}  /> : null
-                        }
-                        { !isLoading && orders && orders.length === 0 ? <EmptyOrder /> : null }
-                        { isLoading && <LoadingState /> }
-                    </div>
+                    { isClient &&
+                        <div className="py-2 inline-block min-w-full">
+                            { !isLoading && orders && orders.length > 0 
+                                ? <OrdersTable orders={orders}  /> : null
+                            }
+                            { !isLoading && orders && orders.length === 0 ? <EmptyOrder /> : null }
+                            { isLoading && <LoadingState /> }
+                        </div>
+                    }
                 </div>
             </RootLayout>
         </>

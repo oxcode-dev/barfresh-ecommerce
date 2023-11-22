@@ -46,9 +46,11 @@ export const CartTable = () => {
                                                     <td className="px-5 py-5 sm:py-10 border-b border-gray-200 bg-white text-sm">
                                                         <div className="flex items-center space-x-4 sm:space-x-6">
                                                             <div className="flex-shrink-0 w-10 h-10 sm:w-16 sm:h-auto">
-                                                                <img className="w-full object-cover h-full rounded-lg"
-                                                                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
-                                                                    alt="" />
+                                                                <img 
+                                                                    className="w-full object-cover h-full rounded-lg"
+                                                                    alt="" 
+                                                                    src={getProductDetails(cart.product_id)?.image || '/img/no-product-image.png'}
+                                                                />
                                                             </div>
                                                             <div className="ml-3 flex flex-col">
                                                                 <Link

@@ -59,7 +59,7 @@ export default function Store() {
                             <div className='w-full flex flex-wrap'>
                                 <div className='w-full sm:w-3/5'>
                                     <div className='sm:pr-12'>
-                                        <ProductImagesView />
+                                        <ProductImagesView product={product} />
                                     </div>
                                 </div>
                                 <div className='w-full sm:w-2/5'>

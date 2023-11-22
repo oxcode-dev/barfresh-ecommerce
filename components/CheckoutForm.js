@@ -5,6 +5,8 @@ import { useFirebaseDB } from '../hooks/useFirebaseDB'
 import { o_O } from "../helpers";
 import { useRouter } from "next/navigation";
 import { NotificationBar } from "./Notification";
+import { useSelector } from "react-redux";
+import { getUser } from "../store/slices/CartSlice";
 
 const infoData = [
     'We accept Cash on Delivery payments.',
@@ -13,11 +15,13 @@ const infoData = [
     'Please Contact us for more information.'
 ]
 export const CheckoutForm = ({totalAmount=0, shippingCost=0}) => {
+    const user = useSelector(getUser) || ''
+
     const router = useRouter()
     const { carts, resetCarts, getProductDetails } = useCartDetail()
     const { addData } = useFirebaseDB()
 
-    const [email, setEmail] = useState('')
+    const [email, setEmail] = useState(user || '')
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [city, setCity] = useState('')
@@ -85,6 +89,7 @@ export const CheckoutForm = ({totalAmount=0, shippingCost=0}) => {
                             className="w-full bg-transparent py-1 px-3 border border-gray-300 rounded-lg h-10 text-sm focus:outline-none" 
                             placeholder="Email"
                             onChange={e => setEmail(e.target.value)}
+                            value={email}
                         />
                     </div>
                     <div className='my-8 space-y-1.5'>

@@ -1,5 +1,5 @@
 import 
-  { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc, getCountFromServer, query, orderBy, startAfter, limit, where } 
+  { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc, getCountFromServer, query, orderBy, startAfter, limit, where, Timestamp } 
 from 'firebase/firestore'
 import { db } from '../firebase.config';
 import { useState } from 'react';
@@ -81,8 +81,13 @@ export const useFirebaseDB = () => {
         }
     }
 
+    function convertTimestamp(timestamp) {
+        let date = new Timestamp(timestamp.seconds, timestamp.nanoseconds).toDate();
+        return date.toLocaleString()
+    }
+
     return { 
-        query, queryCount, getTotalData, getAllData, addData,
+        query, queryCount, getTotalData, getAllData, addData, convertTimestamp,
         updateDate, deleteData, getDataWithId, getDataWhereKeyValue
     }
 }

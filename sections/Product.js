@@ -17,8 +17,8 @@ const images = [
     'https://www.lumibeauty.com/3129-large_default/dudu-osun-black-soap.jpg',
     // 'https://girlyessentials.com.ng/wp-content/uploads/2022/11/beautysecretsafricanblacksoap.jpg',
 ]
-export const ProductImagesView = () => {
-    const [activeImage, setActiveImage] = useState(images[0])
+export const ProductImagesView = ({ product }) => {
+    // const [activeImage, setActiveImage] = useState(images[0])
 
     return (
         <>
@@ -26,11 +26,11 @@ export const ProductImagesView = () => {
                 {/* Full Image */}
                 <div className="relative">
                     <picture className="w-full h-96 overflow-h-hidden">
-                        <img src={activeImage} className="w-full h-full rounded-lg object-cover" />
+                        <img src={product?.image || '/img/no-product-image.png'} className="w-full h-full rounded-lg object-cover" />
                     </picture>
                 </div>
                 {/* Smaller Images */}
-                <div className="py-4">
+                <div className="py-4 hidden">
                     <div className="flex w-full overflow-x-hidden">
                         { images.map((image, key) => (
                             <button key={key} onClick={ () => setActiveImage(image)} className="mx-2 sm:p-1 border rounded">

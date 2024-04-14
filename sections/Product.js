@@ -174,7 +174,7 @@ export const ProductDescription = ({ product }) => {
                         Description 
                     </h2>
                 </div>
-                <div className="sm:px-4 lg:px-0 mt-6 text-gray-700 w-full md:max-w-5xl mx-auto text-lg leading-relaxed">
+                <div className="sm:px-4 lg:px-0 mt-6 text-gray-700 w-full md:max-w-5xl text-lg leading-relaxed">
                     {product.description || 'N/A'}
                 </div>
             </div>
@@ -195,7 +195,7 @@ export const ProductReviews = ({ reviews = [], product}) => {
 
     return (
         <>
-            <div className="sm:px-4 lg:px-0 mt-6 text-gray-700 w-full mx-auto text-lg leading-relaxed">
+            <div className="sm:px-4 lg:px-0 mt-6 text-gray-700 w-full text-lg leading-relaxed">
                 <h2 className="text-xl sm:text-4xl text-gray-800 font-bold mb-4 mt-4">
                     Customers Reviews 
                 </h2>
@@ -227,7 +227,7 @@ export const ProductReviews = ({ reviews = [], product}) => {
                 </div>
             </div>
 
-            <div className="space-y-8 w-full mx-auto mb-4">
+            <div className="space-y-8 w-full mb-4">
                 {  reviews && reviews.length > 0
                     ? reviews.map((review, key) => (
                         <div className="bg-gray-50 px-4 md:px-24 py-6 rounded-lg" key={key}>

@@ -2,16 +2,21 @@
 import EmptyState from '../components/EmptyState';
 import { useCartDetail } from '../hooks/useCartDetail'
 import Link from 'next/link';
+import { LoadingState } from '../components/LoadingState';
+import { Suspense } from 'react';
 
 export const CartTable = () => { 
     const { 
         isClient, carts, totalAmount, getProductDetails, handleCartQuantity, 
-        handleReduceCartQuantity,handleRemoveCartItem
+        handleReduceCartQuantity,handleRemoveCartItem, isLoading,
     } = useCartDetail()
 
     return (
         <>
             <div className='w-full flex'>
+                <Suspense fallback={isLoading} className='w-full flex flex-col justify-center items-center'>
+                    { isLoading && <LoadingState />}
+                </Suspense>
                 { isClient && 
                     <div className="w-full -mx-4 sm:-mx-8 px-2 sm:px-8 py-4 overflow-hidden">
                         { carts && carts.length > 0 &&

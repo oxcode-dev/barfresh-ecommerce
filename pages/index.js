@@ -3,13 +3,11 @@ import { FaqsSection, Hero, HomeAboutSection, HomeBenefits, HomeProducts } from 
 import Reviews from '../sections/Reviews'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-// import { fetchProducts, getProducts } from '../store/slices/ProductsSlice'
 import { fetchFaqs } from '../store/slices/FaqsSlice'
 import { fetchReviews } from '../store/slices/ReviewsSlice'
 import { fetchProducts } from '../store/slices/ProductsSlice'
 import { useFirebaseDB } from '../hooks/useFirebaseDB'
 import { o_O } from '../helpers'
-import EmptyState from '../components/EmptyState'
 
 export default function Home() {
   const { getAllData } = useFirebaseDB()

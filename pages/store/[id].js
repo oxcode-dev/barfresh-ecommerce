@@ -5,10 +5,12 @@ import Layout from '../../layout'
 import { ProductDescription, ProductDetails, ProductImagesView, ProductReviews } from '../../sections/Product'
 import { usePathname } from 'next/navigation'
 import { Suspense, useEffect, useState } from 'react'
+import { LoadingState } from '../../components/LoadingState'
 
 export default function Store() {
     const params = usePathname()
     const [isClient, setIsClient] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [productId, setProductId] = useState(null)
     const [product, setProduct] = useState({})
     const [productReviews, setProductReviews] = useState([])
@@ -24,6 +26,7 @@ export default function Store() {
             if(error) return console.log(error)
     
             setProduct(data)
+            setIsLoading(false)
         }
     }
 
@@ -52,7 +55,7 @@ export default function Store() {
     return (
         <>
             <Layout>
-                <Suspense fallback={false}>
+                <Suspense fallback={isLoading}>
                     {
                         isClient && !isEmpty(product) &&
                         <div className='px-4 md:px-20 py-16 w-full'>
@@ -74,6 +77,8 @@ export default function Store() {
                             </div>
                         </div>
                     }
+
+                    { isLoading && <LoadingState />}
                 </Suspense>
             </Layout>
         </>

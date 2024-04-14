@@ -12,6 +12,7 @@ export const useCartDetail = () => {
 
     const [carts, setCarts] = useState([])
     const [isClient, setIsClient] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [totalAmount, setTotalAmount] = useState(0)
     const [shippingCost] = useState(8)
 
@@ -20,6 +21,7 @@ export const useCartDetail = () => {
     }
 
     const totalCartsPrice = () => {
+        // setIsLoading(true)
         let amount = carts.reduce((acc = {}, item = {}) => {
             const itemTotal = parseFloat((item.quantity * getProductDetails(item.product_id)?.price || 0).toFixed(2));
             acc.total = parseFloat((acc.total + itemTotal))
@@ -27,6 +29,7 @@ export const useCartDetail = () => {
         },  { total: 0 })
 
         setTotalAmount(amount.total)
+        setIsLoading(false)
     }
 
     const handleRemoveCartItem = (id, e) => {
@@ -113,7 +116,7 @@ export const useCartDetail = () => {
 
     return {
         isClient, setIsClient, totalAmount, shippingCost, getAllCarts,
-        products, carts, getProductDetails, setCarts, handleCartQuantity,
+        products, carts, getProductDetails, setCarts, handleCartQuantity, isLoading,
         handleReduceCartQuantity, handleRemoveCartItem, resetCarts, handleAddCart,
     }
 }

@@ -1,17 +1,19 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getProducts } from '../store/slices/ProductsSlice'
 import ProductCard from '../components/ProductCard'
 import { getCategories } from '../store/slices/CategoriesSlice'
 import EmptyState from '../components/EmptyState'
 import { NotificationBar } from '../components/Notification'
+import { LoadingState } from '../components/LoadingState'
 
 const StoresSection = () => {
   const [allProducts, setAllProducts] = useState([])
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
   const [isClient, setIsClient] = useState(false)
   const [notifyState, setNotifyState] = useState(false)
   const [notifyMessage, setNotifyMessage] = useState('')
@@ -20,25 +22,31 @@ const StoresSection = () => {
   const categories = useSelector(getCategories) || []
 
   const handleSearchProducts = () => {
+    setIsLoading(true)
+    
     if(filter && search) {
         let filtered = products.filter(n => n.category_id === filter)
         let data = filtered.filter(n => {
             return n.name.toLowerCase().includes(search.toLowerCase())
         });
-        return setAllProducts(data)
+        setAllProducts(data)
+        return setIsLoading(false)
     }
     if(filter) {
         let filtered = products.filter(n => n.category_id === filter)
-        return setAllProducts(filtered)
+        setAllProducts(filtered)
+        return setIsLoading(false)
     }
     if(search) {
       let data = products.filter(n => {
         return n.name.toLowerCase().includes(search.toLowerCase())
       });
-      return setAllProducts(data)
+      setAllProducts(data)
+      return setIsLoading(false)
     }
 
-    return setAllProducts(products)
+    setAllProducts(products)
+    return setIsLoading(false)
   }
 
   useEffect(() => {
@@ -135,6 +143,9 @@ const StoresSection = () => {
                 </div>
               </div>
               <div className='w-full md:w-4/5'>
+                <Suspense fallback={isLoading}>
+                  { isLoading && <LoadingState />}
+                </Suspense>
                 {
                   isClient && 
                     <div className='flex flex-wrap'>

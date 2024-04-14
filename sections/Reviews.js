@@ -58,8 +58,8 @@ const Reviews = () => {
                                     </div>
                                     <div className="inline-flex items-center space-x-3">
                                         <img 
-                                            src="https://www.capitalfm.co.ke/lifestyle/files/2015/01/proud.jpg" 
-                                            className="w-12 h-12 aspect-square rounded-full object-cover"
+                                            src={`https://ui-avatars.com/api/?name=${active?.name || 'N/A'}&background=0D8ABC&color=fff`} 
+                                            className="w-10 h-10 aspect-square rounded-full object-cover"
                                         />
                                         <p className="text-sm text-gray-500">
                                             { active?.name || 'N/A' }

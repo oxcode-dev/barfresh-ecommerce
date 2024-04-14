@@ -14,7 +14,7 @@ export const CartTable = () => {
     return (
         <>
             <div className='w-full flex'>
-                <Suspense fallback={isLoading} className='w-full flex flex-col justify-center items-center'>
+                <Suspense fallback={isLoading}>
                     { isLoading && <LoadingState />}
                 </Suspense>
                 { isClient && 

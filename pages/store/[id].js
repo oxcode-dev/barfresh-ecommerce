@@ -55,7 +55,7 @@ export default function Store() {
     return (
         <>
             <Layout>
-                <Suspense fallback={isLoading}>
+                <Suspense fallback={isLoading && <LoadingState />}>
                     {
                         isClient && !isEmpty(product) &&
                         <div className='px-4 md:px-20 py-16 w-full'>
@@ -77,8 +77,6 @@ export default function Store() {
                             </div>
                         </div>
                     }
-
-                    { isLoading && <LoadingState />}
                 </Suspense>
             </Layout>
         </>

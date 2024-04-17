@@ -143,30 +143,29 @@ const StoresSection = () => {
                 </div>
               </div>
               <div className='w-full md:w-4/5'>
-                <Suspense fallback={isLoading}>
-                  { isLoading && <LoadingState />}
-                </Suspense>
-                {
-                  isClient && 
-                    <div className='flex flex-wrap'>
-                      { allProducts.map((option, key) => (
-                        <div key={key} className='w-full sm:w-1/2 md:w-1/3 p-3'>
-                          <ProductCard 
-                            setAlert={setNotifyState}
-                            setMessage={setNotifyMessage}
-                            product={option}
-                          />
-                        </div>
-                      ))}
-                      { allProducts && allProducts.length === 0 && <EmptyState />}
+                <Suspense fallback={ isLoading && <LoadingState />}>
+                  {
+                    isClient && 
+                      <div className='flex flex-wrap'>
+                        { allProducts.map((option, key) => (
+                          <div key={key} className='w-full sm:w-1/2 md:w-1/3 p-3'>
+                            <ProductCard 
+                              setAlert={setNotifyState}
+                              setMessage={setNotifyMessage}
+                              product={option}
+                            />
+                          </div>
+                        ))}
+                        { allProducts && allProducts.length === 0 && <EmptyState />}
 
-                      <NotificationBar
-                        active={notifyState}
-                        onClose={() => setNotifyState(false)}
-                        message={notifyMessage}
-                      />
-                    </div>
-                }
+                        <NotificationBar
+                          active={notifyState}
+                          onClose={() => setNotifyState(false)}
+                          message={notifyMessage}
+                        />
+                      </div>
+                  }
+                </Suspense>
                 
               </div>
             </div>

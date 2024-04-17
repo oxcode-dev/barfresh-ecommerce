@@ -5,7 +5,7 @@ import Faqs from './Faqs';
 import { useSelector } from 'react-redux';
 import { getFaqs } from '../store/slices/FaqsSlice';
 import { getProducts } from '../store/slices/ProductsSlice';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import EmptyState from '../components/EmptyState';
 import { NotificationBar } from '../components/Notification';
 
@@ -56,7 +56,6 @@ export const Hero = () => (
 export const HomeAboutSection = () => { 
     return (
         <>
-            {/* <div className='glitch'></div> */}
             <div className='px-4 md:px-16 py-8 md:py-0 pt-6 w-full' style={{ background: '#F2F9F2' }}>
                 <div className="w-full flex flex-wrap items-center pt-8">
                     <div className="w-full sm:w-1/2 flex justify-between transition-transform duration-[0.8s] ease-[ease-in-out] translate-x-[0%]">
@@ -115,12 +114,15 @@ export const HomeBenefits = () => (
 
 export const HomeProducts = () => { 
     const products = useSelector(getProducts) || []
-    const data = products.slice(0, 3)
     const [notifyState, setNotifyState] = useState(false)
     const [notifyMessage, setNotifyMessage] = useState('')
 
     const [isClient, setIsClient] = useState(false)
 
+    const data = useMemo(() => {
+        return products.slice(0, 3)
+    }, [products])
+    
     useEffect(() => {
         setIsClient(true)
     })

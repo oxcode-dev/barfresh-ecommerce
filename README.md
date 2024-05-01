@@ -19,5 +19,6 @@ Technologies Used
 + Redux for state management
 + Tailwind css for styling 
 + Vercel for deployment
++ Firebase (storage, database)
 
 Check the project on https://barfresh.vercel.app

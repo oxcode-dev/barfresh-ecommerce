@@ -1,24 +1,5 @@
 import Link from 'next/link';
-
-const helpfulLinks = [
-    { title: 'About Us', link: '/about', },
-    { title: 'Contact Us', link: '/contact', },
-    { title: 'Store', link: '/store', },
-    // { title: 'Leave a review', link: '/', },
-]
-
-const legalInfoLinks = [
-    { title: 'Term & Conditions', link: '/', },
-    { title: 'Privacy & Cookie Policy', link: '/', },
-    { title: 'Refund & Return policy', link: '/', },
-]
-
-const paymentIcons = [
-    '/img/visa.png',
-    '/img/mastercard_icon.png',
-    '/img/verve.png',
-    '/img/apple_pay.png',
-]
+import { helpfulLinks, legalInfoLinks, paymentIcons } from '../data/index'
 
 const Footer = () => (
     <>

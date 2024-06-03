@@ -9,14 +9,6 @@ import StarRating from "../components/StarRating";
 import { useCartDetail } from "../hooks/useCartDetail";
 import { NotificationBar } from "../components/Notification";
 
-const images = [
-    'https://anikenatural.com/wp-content/uploads/2021/04/300g-African-Black-Soap.jpeg',
-    'https://mexyeveshop.com.ng/wp-content/uploads/2018/10/Mexyeve-Product-Whitening-Black-Soap.jpeg',
-    'https://www.u-buy.com.ng/productimg/?image=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNzFBYkdQVDk0NkwuX1NMMTE5MF8uanBn.jpg',
-    'https://www.tholuhairbeauty.com/cdn/shop/products/DuduOsun3.jpg?v=1569213274',
-    'https://www.lumibeauty.com/3129-large_default/dudu-osun-black-soap.jpg',
-    // 'https://girlyessentials.com.ng/wp-content/uploads/2022/11/beautysecretsafricanblacksoap.jpg',
-]
 export const ProductImagesView = ({ product }) => {
     // const [activeImage, setActiveImage] = useState(images[0])
 
@@ -30,7 +22,7 @@ export const ProductImagesView = ({ product }) => {
                     </picture>
                 </div>
                 {/* Smaller Images */}
-                <div className="py-4 hidden">
+                {/* <div className="py-4 hidden">
                     <div className="flex w-full overflow-x-hidden">
                         { images.map((image, key) => (
                             <button key={key} onClick={ () => setActiveImage(image)} className="mx-2 sm:p-1 border rounded">
@@ -38,7 +30,7 @@ export const ProductImagesView = ({ product }) => {
                             </button>
                         ))}
                     </div>
-                </div>
+                </div> */}
             </div>
         </>
     )

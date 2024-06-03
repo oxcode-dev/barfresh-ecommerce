@@ -8,12 +8,8 @@ import { getProducts } from '../store/slices/ProductsSlice';
 import { useEffect, useMemo, useState } from 'react';
 import EmptyState from '../components/EmptyState';
 import { NotificationBar } from '../components/Notification';
+import { benefitsList as benefits } from '../data/index'
 
-const benefits = [
-    { title: "Safe payment", img: "/img/benefit_credit_card.png" },
-    { title: "Fast shipping", img: "/img/benefit_delivery.png" },
-    { title: "24/7 Online support", img: "/img/benefit_support.png" },
-]
 export const Hero = () => (
     <>
         <div className='px-4 md:px-20 py-6 w-full text-white' style={{ backgroundColor: '#008000'}}>

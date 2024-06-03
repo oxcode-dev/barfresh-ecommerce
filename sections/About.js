@@ -1,3 +1,4 @@
+import { companyValues as values} from '../data/index'
 export const AboutHero = () => (
     <>
         <div className='px-4 md:px-20 py-8 sm:py-16 w-full'>
@@ -55,12 +56,6 @@ export const FounderHistory = () => (
     </>
 )
 
-const values = [
-    '100% organic ingredients sourced from West Africa',
-    'Completely handmade with utmost care by the mothers of Damongo, Ghana',
-    'Stored in sustainable packaging that are FSC certified and reusable',
-    'Maximum delivery time of 10 days for countries outside the UK, USA, and Canada'
-]
 export const PVCSection = () => (
     <>
         <div className='px-4 md:px-20 py-8 sm:py-16 w-full'>

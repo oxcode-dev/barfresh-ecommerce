@@ -8,7 +8,6 @@ import { Suspense, useEffect, useState } from 'react'
 import { LoadingState } from '../../components/LoadingState'
 
 export default function Store() {
-    const params = usePathname()
     const [isClient, setIsClient] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [productId, setProductId] = useState(null)

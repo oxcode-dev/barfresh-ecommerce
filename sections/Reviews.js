@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react"
 import { useSelector } from 'react-redux';
 import { selectReviews } from '../store/slices/ReviewsSlice';
+import { ReviewCard } from "../components/ReviewCard";
 
 const Reviews = () => { 
     const reviews = useSelector(selectReviews) || []
@@ -14,10 +15,12 @@ const Reviews = () => {
 
     const handleActiveReview = (review, e=null) => {
         e ? e.preventDefault() : null;
-        setActive(review)
-        let index = data.findIndex(n => n.id === review.id)
-        setNextReview(index >= data.length - 1 ? data[0] : data[index + 1])
-        setPrevReview(index === 0 ? data[data.length - 1] : data[index - 1])
+        if(review && review.id){
+            setActive(review)
+            let index = data.findIndex(n => n.id === review.id)
+            setNextReview(index >= data.length - 1 ? data[0] : data[index + 1])
+            setPrevReview(index === 0 ? data[data.length - 1] : data[index - 1])
+        } 
     }
 
     useEffect(() => { 
@@ -52,20 +55,7 @@ const Reviews = () => {
                                 </a>
                             </div>
                             <div className="px-4 md:px-24">
-                                <div className="bg-white py-6 sm:py-8 px-4 sm:px-6 rounded-t-3xl rounded-br-3xl h-64 sm:h-56 flex flex-col justify-between">
-                                    <div className="text-sm sm:text-sm md:text-lg text-gray-500">
-                                        { active?.comment || 'N/A' }
-                                    </div>
-                                    <div className="inline-flex items-center space-x-3">
-                                        <img 
-                                            src={`https://ui-avatars.com/api/?name=${active?.name || 'N/A'}&background=0D8ABC&color=fff`} 
-                                            className="w-10 h-10 aspect-square rounded-full object-cover"
-                                        />
-                                        <p className="text-sm text-gray-500">
-                                            { active?.name || 'N/A' }
-                                        </p>
-                                    </div>
-                                </div>
+                                { active?.id && <ReviewCard review={active} /> }
                                 <div className="flex space-x-3 justify-center my-6">
                                     {
                                         data.map((option, key) => (

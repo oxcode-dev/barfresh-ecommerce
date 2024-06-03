@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities; */
 
-/* @import url('../node_modules/react-simple-star-rating/'); */
 html,
 body {
   padding: 0;

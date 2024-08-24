@@ -120,3 +120,4 @@ export const useCartDetail = () => {
         handleReduceCartQuantity, handleRemoveCartItem, resetCarts, handleAddCart,
     }
 }
+

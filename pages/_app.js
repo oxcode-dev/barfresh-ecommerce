@@ -30,4 +30,3 @@ function App({ Component, ...rest }) {
 const WrappedApp = wrapper.withRedux(App)
 
 export default WrappedApp 
-

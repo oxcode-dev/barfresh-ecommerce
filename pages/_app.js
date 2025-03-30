@@ -31,3 +31,12 @@ const WrappedApp = wrapper.withRedux(App)
 
 export default WrappedApp 
 
+
+
+
+
+
+
+
+
+
